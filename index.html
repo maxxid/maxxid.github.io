@@ -158,6 +158,34 @@
   }
   .btn-map:active { transform: scale(.985); }
 
+  /* ---------- Open/Closed status ---------- */
+  .status{
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: .84rem; font-weight: 600;
+    padding: 9px 16px; border-radius: 999px;
+    margin-bottom: 32px;
+    border: 1px solid;
+  }
+  .status.open{ color:#7ef0a6; background:rgba(46,204,113,.12); border-color:rgba(46,204,113,.4); }
+  .status.closed{ color:#c9c9d2; background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.16); }
+  .status .dot{ width:9px; height:9px; border-radius:50%; background:currentColor; animation:pulse 1.6s ease-in-out infinite alternate; }
+  @keyframes pulse{ from{ opacity:.35; } to{ opacity:1; } }
+
+  /* ---------- Gallery ---------- */
+  .grow{ display:flex; gap:12px; overflow-x:auto; padding:2px; scroll-snap-type:x mandatory; }
+  .grow::-webkit-scrollbar{ height:6px; }
+  .grow::-webkit-scrollbar-track{ background:rgba(255,255,255,.06); border-radius:99px; }
+  .grow::-webkit-scrollbar-thumb{ background:rgba(255,140,0,.45); border-radius:99px; }
+  .gitem{ flex:0 0 70%; max-width:70%; scroll-snap-align:start; }
+  .gitem .gt{
+    aspect-ratio: 4/3; border-radius: 16px; overflow: hidden;
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    display: grid; place-items: center;
+  }
+  .gitem img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .gitem .gf{ font-size:2.6rem; }
+  .gitem .glabel{ display:block; font-size:.74rem; color:#a9a9b2; padding:8px 2px 0; }
+
   footer { text-align:center; margin-top: 40px; color:#5c5c66; font-size:.78rem; }
 </style>
 </head>
@@ -172,6 +200,11 @@
     Centro de copias e impresiones, kiosco con lo de siempre y café al paso para que tu día rinda.
     Escaneá, encargá y pasá a buscarlo.
   </p>
+
+  <div class="status" id="status">
+    <span class="dot"></span>
+    <span id="stxt">Calculando…</span>
+  </div>
 
   <div class="chips">
     <div class="chip">📄 <b>Copias</b> y <b>impresiones</b></div>
@@ -199,9 +232,15 @@
 
   <div class="card">
     <h2>🕐 Horarios</h2>
+    <div class="info-line"><span class="i">📅</span><span><b id="today">Hoy</b></span></div>
     <div class="info-line"><span class="i">🌞</span><span><b>Lun a Vie</b> · 8:00 a 20:00</span></div>
     <div class="info-line"><span class="i">🌅</span><span><b>Sábados</b> · 9:00 a 13:00</span></div>
     <div class="info-line"><span class="i">☕</span><span><b>Café al paso</b> · todo el día</span></div>
+  </div>
+
+  <div class="card gallery">
+    <h2>📸 Galería</h2>
+    <div class="grow" id="grow"></div>
   </div>
 </div>
 
@@ -212,5 +251,71 @@
 </div>
 
 <footer>Tu Espacio · maxxid.github.io</footer>
+
+<script>
+/* ====== HORARIOS ====== d: 0=Dom 1=Lun ... 6=Sab ; a/c en minutos */
+var H = [
+  { d:[1,2,3,4,5], a:8*60,  c:20*60 },
+  { d:[6],         a:9*60,  c:13*60 }
+];
+var DIAS = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+function fmt(m){ return Math.floor(m/60) + ":" + String(m%60).padStart(2,"0"); }
+
+function tick(){
+  var n = new Date(), day = n.getDay(), mins = n.getHours()*60 + n.getMinutes();
+  var slot = H.find(function(s){ return s.d.indexOf(day) >= 0; });
+  var open = slot && mins >= slot.a && mins < slot.c;
+  var st = document.getElementById("status"), txt = document.getElementById("stxt");
+
+  var todayEl = document.getElementById("today");
+  todayEl.textContent = slot
+    ? "Hoy · " + fmt(slot.a) + " a " + fmt(slot.c)
+    : "Hoy · Cerrado " + DIAS[day].toLowerCase();
+
+  if(open){
+    st.className = "status open";
+    txt.textContent = "Abierto ahora · cierra a las " + fmt(slot.c);
+  } else {
+    st.className = "status closed";
+    var label;
+    if(slot && mins < slot.a){ label = "Cerrado · abre a las " + fmt(slot.a); }
+    else {
+      for(var i=1;i<=8;i++){
+        var d = new Date(n); d.setDate(n.getDate()+i);
+        var s = H.find(function(x){ return x.d.indexOf(d.getDay()) >= 0; });
+        if(s){
+          var w = i === 1 ? "mañana" : DIAS[d.getDay()].toLowerCase();
+          label = "Cerrado · abre " + w + " a las " + fmt(s.a);
+          break;
+        }
+      }
+    }
+    txt.textContent = label;
+  }
+}
+tick();
+setInterval(tick, 60000);
+
+/* ====== GALERÍA ====== */
+var G = [
+  { s:"img/desayuno.jpg", t:"Desayunos" },
+  { s:"img/cafe.jpg",     t:"Café al paso" },
+  { s:"img/kiosco.jpg",   t:"Kiosco" },
+  { s:"img/copias.jpg",   t:"Copias e impresiones" }
+];
+var gw = document.getElementById("grow");
+G.forEach(function(g){
+  var it = document.createElement("div"); it.className = "gitem";
+  var box = document.createElement("div"); box.className = "gt";
+  var img = document.createElement("img");
+  img.alt = g.t;
+  img.onerror = function(){ box.innerHTML = '<span class="gf">🖼️</span>'; };
+  img.src = g.s;
+  box.appendChild(img);
+  var lb = document.createElement("span"); lb.className = "glabel"; lb.textContent = g.t;
+  it.appendChild(box); it.appendChild(lb);
+  gw.appendChild(it);
+});
+</script>
 </body>
 </html>
