@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tu Espacio | Centro de Copias, Kiosco y Café al Paso</title>
+<meta name="description" content="Tu Espacio — centro de copias e impresiones, kiosco y café al paso. Escaneá, encargá y vení a visitarnos." />
+<meta property="og:title" content="Tu Espacio" />
+<meta property="og:description" content="Centro de Copias, Kiosco y Café al Paso" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Poppins', system-ui, sans-serif;
+    background: #0b0b0d;
+    color: #f5f5f5;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { text-decoration: none; color: inherit; }
+
+  /* ---------- Decorative background ---------- */
+  .bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(1200px 600px at 85% -10%, rgba(255,140,0,.22), transparent 60%),
+                radial-gradient(900px 500px at -10% 30%, rgba(255,100,0,.12), transparent 55%),
+                #0b0b0d;
+  }
+
+  /* ---------- Layout ---------- */
+  .wrap {
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 56px 20px 140px;
+  }
+
+  /* ---------- Hero ---------- */
+  .logo {
+    width: 84px; height: 84px;
+    border-radius: 24px;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: 2rem; color: #0b0b0d;
+    background: linear-gradient(135deg, #ffa235 0%, #ff6a00 100%);
+    box-shadow: 0 12px 40px rgba(255,120,0,.45);
+    margin-bottom: 24px;
+  }
+  .logo span { transform: rotate(-6deg); }
+  .tag {
+    display: inline-block;
+    font-size: .72rem; font-weight: 600; letter-spacing: .14em;
+    text-transform: uppercase;
+    color: #ffb054;
+    background: rgba(255,140,0,.12);
+    border: 1px solid rgba(255,140,0,.35);
+    padding: 6px 14px; border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-size: 2.1rem; line-height: 1.15; font-weight: 800;
+    background: linear-gradient(100deg, #fff 30%, #ffa235 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 14px;
+  }
+  .sub {
+    color: #a9a9b2;
+    font-size: .98rem; line-height: 1.6;
+    margin-bottom: 32px;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+  .chip {
+    font-size: .72rem; font-weight: 600;
+    color: #e8e8ec;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .chip b { color: #ffb054; }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    display: flex; align-items: center; gap: 14px;
+    width: 100%;
+    padding: 18px 20px;
+    border-radius: 18px;
+    font-weight: 700; font-size: 1rem;
+    margin-bottom: 14px;
+    transition: transform .15s ease, box-shadow .2s ease;
+    cursor: pointer;
+  }
+  .btn:active { transform: scale(.985); }
+  .btn .ic {
+    width: 42px; height: 42px; border-radius: 13px;
+    display: grid; place-items: center; flex-shrink: 0;
+    font-size: 1.3rem;
+  }
+  .btn .ttl { flex: 1; }
+  .btn .ttl small { display:block; font-size:.72rem; font-weight:500; opacity:.75; margin-top:2px; }
+  .btn .arr { font-size: 1.3rem; opacity: .6; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffa235, #ff6a00);
+    color: #0b0b0d;
+    box-shadow: 0 14px 34px rgba(255,120,0,.35);
+  }
+  .btn-ghost {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.14);
+  }
+  .btn-ghost .ic { background: rgba(255,255,255,.06); }
+
+  /* wa green */
+  .btn-wa { background: linear-gradient(135deg, #2bb673, #1f9d5b); color:#fff; box-shadow: 0 14px 34px rgba(31,157,91,.30); }
+
+  /* ---------- Cards ---------- */
+  .card {
+    margin-top: 34px;
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 22px;
+    padding: 22px;
+    backdrop-filter: blur(6px);
+  }
+  .card h2 {
+    font-size: .82rem; letter-spacing: .16em; text-transform: uppercase;
+    color: #ffb054; margin-bottom: 16px; font-weight: 700;
+  }
+  .info-line {
+    display: flex; align-items: center; gap: 14px;
+    padding: 9px 0; color: #d7d7de; font-size: .95rem;
+  }
+  .info-line .i { width: 26px; text-align: center; font-size: 1.05rem; flex-shrink: 0; }
+  .info-line b { color: #fff; font-weight: 600; }
+
+  /* ---------- Floating button ---------- */
+  .floating {
+    position: fixed;
+    left: 50%; transform: translateX(-50%);
+    bottom: 20px; width: calc(100% - 40px); max-width: 420px;
+    z-index: 50;
+  }
+  .btn-map {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px;
+    border-radius: 18px;
+    font-weight: 700;
+    color: #0b0b0d;
+    background: #fff;
+    box-shadow: 0 16px 40px rgba(0,0,0,.55);
+  }
+  .btn-map:active { transform: scale(.985); }
+
+  footer { text-align:center; margin-top: 40px; color:#5c5c66; font-size:.78rem; }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<div class="wrap">
+  <div class="logo"><span>T</span></div>
+  <div class="tag">Tu Espacio</div>
+  <h1>Copias, kiosco y tu café como tiene que ser.</h1>
+  <p class="sub">
+    Centro de copias e impresiones, kiosco con lo de siempre y café al paso para que tu día rinda.
+    Escaneá, encargá y pasá a buscarlo.
+  </p>
+
+  <div class="chips">
+    <div class="chip">📄 <b>Copias</b> y <b>impresiones</b></div>
+    <div class="chip">☕ <b>Café</b> al paso</div>
+    <div class="chip">🛒 <b>Kiosco</b></div>
+  </div>
+
+  <a class="btn btn-primary" href="https://unju.imprenta.store/" target="_blank" rel="noopener">
+    <span class="ic">📄</span>
+    <span class="ttl">Encargá tus copias<small>Impresiones y más en nuestra web</small></span>
+    <span class="arr">→</span>
+  </a>
+
+  <a class="btn btn-ghost" href="https://unju.imprenta.store/" target="_blank" rel="noopener">
+    <span class="ic">☕</span>
+    <span class="ttl">Ofertas en desayunos<small>Disponibles este mes</small></span>
+    <span class="arr">→</span>
+  </a>
+
+  <a class="btn btn-wa" href="https://wa.me/543885888949" target="_blank" rel="noopener">
+    <span class="ic">💬</span>
+    <span class="ttl">WhatsApp<small>Consultá o hacé tu pedido</small></span>
+    <span class="arr">→</span>
+  </a>
+
+  <div class="card">
+    <h2>🕐 Horarios</h2>
+    <div class="info-line"><span class="i">🌞</span><span><b>Lun a Vie</b> · 8:00 a 20:00</span></div>
+    <div class="info-line"><span class="i">🌅</span><span><b>Sábados</b> · 9:00 a 13:00</span></div>
+    <div class="info-line"><span class="i">☕</span><span><b>Café al paso</b> · todo el día</span></div>
+  </div>
+</div>
+
+<div class="floating">
+  <a class="btn-map" href="https://maps.app.goo.gl/q2Vh8zgkbMgsKJRY9" target="_blank" rel="noopener">
+    🧭 Como llegar
+  </a>
+</div>
+
+<footer>Tu Espacio · maxxid.github.io</footer>
+</body>
+</html>
