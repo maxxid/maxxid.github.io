@@ -41,15 +41,17 @@
 
   /* ---------- Hero ---------- */
   .logo {
-    width: 84px; height: 84px;
-    border-radius: 24px;
+    width: 110px; height: 110px;
+    border-radius: 26px;
     display: grid; place-items: center;
-    font-weight: 800; font-size: 2rem; color: #0b0b0d;
-    background: linear-gradient(135deg, #ffa235 0%, #ff6a00 100%);
-    box-shadow: 0 12px 40px rgba(255,120,0,.45);
+    overflow: hidden;
+    background: #fff;
+    border: 3px solid rgba(255,140,0,.4);
+    box-shadow: 0 12px 40px rgba(255,120,0,.4);
     margin-bottom: 24px;
+    padding: 8px;
   }
-  .logo span { transform: rotate(-6deg); }
+  .logo img { width: 100%; height: 100%; object-fit: contain; }
   .tag {
     display: inline-block;
     font-size: .72rem; font-weight: 600; letter-spacing: .14em;
@@ -163,7 +165,7 @@
 <div class="bg"></div>
 
 <div class="wrap">
-  <div class="logo"><span>T</span></div>
+  <div class="logo"><img src="logo.png" alt="Tu Espacio logo" /></div>
   <div class="tag">Tu Espacio</div>
   <h1>Copias, kiosco y tu café como tiene que ser.</h1>
   <p class="sub">
